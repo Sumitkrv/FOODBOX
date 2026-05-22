@@ -1,12 +1,12 @@
 export const categories = [
-  { id: "veg-curry", name: "Veg Curry Kits", icon: "🥗", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" },
-  { id: "paneer", name: "Paneer Kits", icon: "🧀", image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" },
-  { id: "dal", name: "Dal Kits", icon: "🍲", image: "https://images.unsplash.com/photo-1585937421612-70a008296fbe?w=600&q=80" },
-  { id: "roti", name: "Roti Packs", icon: "🫓", image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" },
-  { id: "rice", name: "Rice Packs", icon: "🍚", image: "https://images.unsplash.com/photo-1516684669134-de6f7d4737a8?w=600&q=80" },
-  { id: "family", name: "Family Boxes", icon: "👨‍👩‍👧‍👦", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" },
-  { id: "diet", name: "Healthy Diet Boxes", icon: "💪", image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80" },
-  { id: "quick", name: "Quick 15-Min Meals", icon: "⚡", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" },
+  { id: "veg-curry", name: "Veg Curry Kits", icon: "🥗", image: "https://images.unsplash.com/photo-1595855759920-86582396756a?w=600&q=80" },
+  { id: "paneer", name: "Paneer Kits", icon: "🧀", image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" },
+  { id: "dal", name: "Dal Kits", icon: "🍲", image: "https://images.unsplash.com/photo-1585994795213-197ee485222c?w=600&q=80" },
+  { id: "roti", name: "Roti Packs", icon: "🫓", image: "https://images.unsplash.com/photo-1627662236973-4f8259fa2441?w=600&q=80" },
+  { id: "rice", name: "Rice Packs", icon: "🍚", image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80" },
+  { id: "family", name: "Family Boxes", icon: "👨‍👩‍👧‍👦", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" },
+  { id: "diet", name: "Healthy Diet Boxes", icon: "💪", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" },
+  { id: "quick", name: "Quick 15-Min Meals", icon: "⚡", image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" },
 ];
 
 export const mealKits = [
@@ -21,7 +21,15 @@ export const mealKits = [
     price: 249,
     description:
       "Fresh spinach puree, paneer cubes, and aromatic spices — cook restaurant-style palak paneer at home.",
-    ingredients: ["Spinach puree", "Paneer cubes", "Onion", "Tomato", "Ginger-garlic paste", "Cream", "Spice mix"],
+    ingredients: [
+      { name: "Spinach puree", amount: 200, unit: "g" },
+      { name: "Paneer cubes", amount: 150, unit: "g" },
+      { name: "Onion", amount: 1, unit: "pc" },
+      { name: "Tomato", amount: 1, unit: "pc" },
+      { name: "Ginger-garlic paste", amount: 15, unit: "g" },
+      { name: "Cream", amount: 30, unit: "ml" },
+      { name: "Spice mix", amount: 1, unit: "pack" }
+    ],
     nutrition: [
       { label: "Calories", value: "320 kcal" },
       { label: "Protein", value: "18g" },
@@ -40,14 +48,21 @@ export const mealKits = [
   {
     id: "dal-tadka",
     name: "Dal Tadka Kit",
-    image: "https://images.unsplash.com/photo-1585937421612-70a008296fbe?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&q=80",
     category: "dal",
     cookTime: 12,
     spiceLevel: 3,
     servings: 3,
     price: 179,
     description: "Pre-soaked toor dal with tadka spices ready to temper and serve.",
-    ingredients: ["Toor dal (pre-soaked)", "Onion", "Tomato", "Green chilli", "Tadka spice mix", "Ghee"],
+    ingredients: [
+      { name: "Toor dal (pre-soaked)", amount: 250, unit: "g" },
+      { name: "Onion", amount: 1, unit: "pc" },
+      { name: "Tomato", amount: 1, unit: "pc" },
+      { name: "Green chilli", amount: 2, unit: "pcs" },
+      { name: "Tadka spice mix", amount: 1, unit: "pack" },
+      { name: "Ghee", amount: 20, unit: "ml" }
+    ],
     nutrition: [
       { label: "Calories", value: "210 kcal" },
       { label: "Protein", value: "12g" },
@@ -61,14 +76,22 @@ export const mealKits = [
   {
     id: "paneer-butter-masala",
     name: "Paneer Butter Masala",
-    image: "https://images.unsplash.com/photo-1603894584375-3fb0224b1ba9?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&q=80",
     category: "paneer",
     cookTime: 18,
     spiceLevel: 2,
     servings: 2,
     price: 269,
     description: "Rich tomato-cashew gravy with soft paneer — a crowd favourite.",
-    ingredients: ["Paneer", "Tomato puree", "Cashew paste", "Butter", "Cream", "Kasuri methi", "Spice blend"],
+    ingredients: [
+      { name: "Paneer", amount: 200, unit: "g" },
+      { name: "Tomato puree", amount: 250, unit: "ml" },
+      { name: "Cashew paste", amount: 50, unit: "g" },
+      { name: "Butter", amount: 30, unit: "g" },
+      { name: "Cream", amount: 20, unit: "ml" },
+      { name: "Kasuri methi", amount: 5, unit: "g" },
+      { name: "Spice blend", amount: 1, unit: "pack" }
+    ],
     nutrition: [
       { label: "Calories", value: "380 kcal" },
       { label: "Protein", value: "16g" },
@@ -82,14 +105,23 @@ export const mealKits = [
   {
     id: "mix-veg-curry",
     name: "Mix Veg Curry Kit",
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80",
     category: "veg-curry",
     cookTime: 15,
     spiceLevel: 2,
     servings: 3,
     price: 199,
     description: "Chopped seasonal vegetables with curry masala — wholesome and quick.",
-    ingredients: ["Carrot", "Beans", "Cauliflower", "Peas", "Potato", "Onion", "Tomato", "Curry masala"],
+    ingredients: [
+      { name: "Carrot", amount: 100, unit: "g" },
+      { name: "Beans", amount: 80, unit: "g" },
+      { name: "Cauliflower", amount: 150, unit: "g" },
+      { name: "Peas", amount: 50, unit: "g" },
+      { name: "Potato", amount: 1, unit: "pc" },
+      { name: "Onion", amount: 1, unit: "pc" },
+      { name: "Tomato", amount: 1, unit: "pc" },
+      { name: "Curry masala", amount: 1, unit: "pack" }
+    ],
     nutrition: [
       { label: "Calories", value: "180 kcal" },
       { label: "Protein", value: "6g" },
@@ -103,14 +135,19 @@ export const mealKits = [
   {
     id: "jeera-rice",
     name: "Jeera Rice Pack",
-    image: "https://images.unsplash.com/photo-1516684669134-de6f7d4737a8?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=800&q=80",
     category: "rice",
     cookTime: 10,
     spiceLevel: 1,
     servings: 2,
     price: 89,
     description: "Pre-washed basmati rice with cumin tempering sachet.",
-    ingredients: ["Basmati rice", "Cumin seeds", "Ghee", "Bay leaf"],
+    ingredients: [
+      { name: "Basmati rice", amount: 200, unit: "g" },
+      { name: "Cumin seeds", amount: 10, unit: "g" },
+      { name: "Ghee", amount: 15, unit: "ml" },
+      { name: "Bay leaf", amount: 2, unit: "pcs" }
+    ],
     nutrition: [
       { label: "Calories", value: "240 kcal" },
       { label: "Protein", value: "5g" },
@@ -124,14 +161,17 @@ export const mealKits = [
   {
     id: "roti-pack",
     name: "Fresh Roti Pack (6)",
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&q=80",
     category: "roti",
     cookTime: 5,
     spiceLevel: 1,
     servings: 2,
     price: 59,
     description: "Soft whole-wheat rotis, ready to heat and serve.",
-    ingredients: ["Whole wheat rotis (6)", "Ghee sachet"],
+    ingredients: [
+      { name: "Whole wheat rotis (6)", amount: 6, unit: "pcs" },
+      { name: "Ghee sachet", amount: 1, unit: "pc" }
+    ],
     nutrition: [
       { label: "Calories", value: "120 kcal/roti" },
       { label: "Protein", value: "4g" },
@@ -145,14 +185,20 @@ export const mealKits = [
   {
     id: "family-feast",
     name: "Family Feast Box",
-    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800&q=80",
     category: "family",
     cookTime: 25,
     spiceLevel: 2,
     servings: 4,
     price: 599,
     description: "Complete dinner for 4 — dal, paneer curry, rice, and rotis.",
-    ingredients: ["Dal kit", "Paneer curry kit", "Jeera rice", "Roti pack (8)", "Salad mix"],
+    ingredients: [
+      { name: "Dal kit", amount: 1, unit: "pack" },
+      { name: "Paneer curry kit", amount: 1, unit: "pack" },
+      { name: "Jeera rice", amount: 1, unit: "pack" },
+      { name: "Roti pack (8)", amount: 8, unit: "pcs" },
+      { name: "Salad mix", amount: 150, unit: "g" }
+    ],
     nutrition: [
       { label: "Calories", value: "~900 kcal/person" },
       { label: "Protein", value: "42g" },
@@ -166,14 +212,20 @@ export const mealKits = [
   {
     id: "gym-bowl",
     name: "High-Protein Gym Bowl",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80",
     category: "diet",
     cookTime: 12,
     spiceLevel: 1,
     servings: 1,
     price: 219,
     description: "Grilled paneer, quinoa, and steamed veggies for fitness enthusiasts.",
-    ingredients: ["Paneer strips", "Quinoa", "Broccoli", "Bell pepper", "Lemon herb dressing"],
+    ingredients: [
+      { name: "Paneer strips", amount: 150, unit: "g" },
+      { name: "Quinoa", amount: 80, unit: "g" },
+      { name: "Broccoli", amount: 100, unit: "g" },
+      { name: "Bell pepper", amount: 1, unit: "pc" },
+      { name: "Lemon herb dressing", amount: 30, unit: "ml" }
+    ],
     nutrition: [
       { label: "Calories", value: "340 kcal" },
       { label: "Protein", value: "32g" },
@@ -187,14 +239,21 @@ export const mealKits = [
   {
     id: "quick-stir-fry",
     name: "Veg Stir Fry (15 min)",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&q=80",
     category: "quick",
     cookTime: 15,
     spiceLevel: 2,
     servings: 2,
     price: 159,
     description: "Flash-fry mix with Asian-style sauce sachet.",
-    ingredients: ["Bell pepper", "Broccoli", "Carrot", "Baby corn", "Sauce mix", "Sesame oil"],
+    ingredients: [
+      { name: "Bell pepper", amount: 1, unit: "pc" },
+      { name: "Broccoli", amount: 120, unit: "g" },
+      { name: "Carrot", amount: 80, unit: "g" },
+      { name: "Baby corn", amount: 60, unit: "g" },
+      { name: "Sauce mix", amount: 1, unit: "pack" },
+      { name: "Sesame oil", amount: 10, unit: "ml" }
+    ],
     nutrition: [
       { label: "Calories", value: "190 kcal" },
       { label: "Protein", value: "5g" },

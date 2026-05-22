@@ -57,8 +57,8 @@ export default function Hero() {
           <div className="relative mx-auto aspect-square max-w-lg">
             <div className="absolute -inset-4 rounded-full bg-brand-orange/30 blur-3xl" />
             <img
-              src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80"
-              alt="Fresh meal kit ingredients"
+              src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&q=80"
+              alt="Palak Paneer Meal Kit"
               className="relative w-full rounded-3xl object-cover shadow-2xl ring-4 ring-white/20"
               width={600}
               height={600}

@@ -99,11 +99,22 @@ export default function ProductPage() {
 
         <div className="mt-16 grid gap-8 lg:grid-cols-3">
           <div className="card-base p-6 lg:col-span-1">
-            <h2 className="text-lg font-bold">Ingredients</h2>
-            <ul className="mt-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">Ingredients</h2>
+              <span className="text-xs text-gray-500 font-medium bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-full">
+                For {kit.servings * quantity} servings ({quantity} {quantity === 1 ? 'kit' : 'kits'})
+              </span>
+            </div>
+            <ul className="mt-4 divide-y divide-gray-100 dark:divide-gray-800">
               {kit.ingredients.map((ing) => (
-                <li key={ing} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green" /> {ing}
+                <li key={ing.name} className="flex items-center justify-between py-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green" />
+                    {ing.name}
+                  </span>
+                  <span className="font-bold text-brand-green bg-brand-green/5 dark:bg-brand-green/15 px-2.5 py-0.5 rounded text-xs font-mono">
+                    {ing.amount * quantity} {ing.unit}
+                  </span>
                 </li>
               ))}
             </ul>

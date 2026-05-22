@@ -89,13 +89,27 @@ export default function CheckoutPage() {
             {step === 3 && (
               <div className="card-base p-6">
                 <h2 className="font-bold">Order Summary</h2>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-4">
                   {items.map((item) => (
-                    <li key={item.kit.id} className="flex justify-between text-sm">
-                      <span>
-                        {item.kit.name} × {item.quantity}
-                      </span>
-                      <span>₹{item.kit.price * item.quantity}</span>
+                    <li key={item.kit.id} className="border-b border-gray-100 dark:border-gray-850 pb-4 last:border-0">
+                      <div className="flex justify-between text-sm font-semibold text-gray-900 dark:text-white">
+                        <span>
+                          {item.kit.name} × {item.quantity}
+                        </span>
+                        <span>₹{item.kit.price * item.quantity}</span>
+                      </div>
+                      <div className="mt-2 pl-3 border-l-2 border-brand-green/30">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                          Prepped Ingredients ({item.kit.servings * item.quantity} servings):
+                        </p>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {item.kit.ingredients.map((ing) => (
+                            <span key={ing.name} className="inline-flex items-center gap-1 rounded-md bg-gray-100/80 px-2 py-0.5 text-[10px] text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                              {ing.name}: <strong className="text-brand-orange font-semibold font-mono">{ing.amount * item.quantity} {ing.unit}</strong>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </li>
                   ))}
                 </ul>
