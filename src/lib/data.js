@@ -1,11 +1,11 @@
 export const categories = [
-  { id: "veg-curry", name: "Veg Curry Kits", icon: "🥗", image: "https://images.unsplash.com/photo-1595855759920-86582396756a?w=600&q=80" },
-  { id: "paneer", name: "Paneer Kits", icon: "🧀", image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" },
-  { id: "dal", name: "Dal Kits", icon: "🍲", image: "https://images.unsplash.com/photo-1585994795213-197ee485222c?w=600&q=80" },
-  { id: "roti", name: "Roti Packs", icon: "🫓", image: "https://images.unsplash.com/photo-1627662236973-4f8259fa2441?w=600&q=80" },
-  { id: "rice", name: "Rice Packs", icon: "🍚", image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80" },
-  { id: "family", name: "Family Boxes", icon: "👨‍👩‍👧‍👦", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" },
-  { id: "diet", name: "Healthy Diet Boxes", icon: "💪", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" },
+  { id: "veg-curry", name: "Veg Curry Kits", icon: "🥗", image: "/mix-veg-curry.jpg" },
+  { id: "paneer", name: "Paneer Kits", icon: "🧀", image: "/paneer-butter-masala.jpg" },
+  { id: "dal", name: "Dal Kits", icon: "🍲", image: "/dal-tadka.jpg" },
+  { id: "roti", name: "Roti Packs", icon: "🫓", image: "/roti-pack.jpg" },
+  { id: "rice", name: "Rice Packs", icon: "🍚", image: "/jeera-rice.jpg" },
+  { id: "family", name: "Family Boxes", icon: "👨‍👩‍👧‍👦", image: "/family-feast.png" },
+  { id: "diet", name: "Healthy Diet Boxes", icon: "💪", image: "/gym-bowl.jpg" },
   { id: "quick", name: "Quick 15-Min Meals", icon: "⚡", image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" },
 ];
 
@@ -13,7 +13,7 @@ export const mealKits = [
   {
     id: "palak-paneer",
     name: "Palak Paneer Kit",
-    image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&q=80",
+    image: "/palak-paneer.jpg",
     category: "paneer",
     cookTime: 15,
     spiceLevel: 2,
@@ -48,7 +48,7 @@ export const mealKits = [
   {
     id: "dal-tadka",
     name: "Dal Tadka Kit",
-    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&q=80",
+    image: "/dal-tadka.jpg",
     category: "dal",
     cookTime: 12,
     spiceLevel: 3,
@@ -76,7 +76,7 @@ export const mealKits = [
   {
     id: "paneer-butter-masala",
     name: "Paneer Butter Masala",
-    image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&q=80",
+    image: "/paneer-butter-masala.jpg",
     category: "paneer",
     cookTime: 18,
     spiceLevel: 2,
@@ -105,7 +105,7 @@ export const mealKits = [
   {
     id: "mix-veg-curry",
     name: "Mix Veg Curry Kit",
-    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80",
+    image: "/mix-veg-curry.jpg",
     category: "veg-curry",
     cookTime: 15,
     spiceLevel: 2,
@@ -135,7 +135,7 @@ export const mealKits = [
   {
     id: "jeera-rice",
     name: "Jeera Rice Pack",
-    image: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=800&q=80",
+    image: "/jeera-rice.jpg",
     category: "rice",
     cookTime: 10,
     spiceLevel: 1,
@@ -161,7 +161,7 @@ export const mealKits = [
   {
     id: "roti-pack",
     name: "Fresh Roti Pack (6)",
-    image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&q=80",
+    image: "/roti-pack.jpg",
     category: "roti",
     cookTime: 5,
     spiceLevel: 1,
@@ -185,7 +185,7 @@ export const mealKits = [
   {
     id: "family-feast",
     name: "Family Feast Box",
-    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800&q=80",
+    image: "/family-feast.png",
     category: "family",
     cookTime: 25,
     spiceLevel: 2,
@@ -212,7 +212,7 @@ export const mealKits = [
   {
     id: "gym-bowl",
     name: "High-Protein Gym Bowl",
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80",
+    image: "/gym-bowl.jpg",
     category: "diet",
     cookTime: 12,
     spiceLevel: 1,
