@@ -18,7 +18,7 @@ export default function MealKitCard({ kit }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition group-hover:opacity-100" />
         <Link
           to={`/product/${kit.id}`}
-          className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium opacity-0 transition group-hover:opacity-100"
+          className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/95 text-gray-900 hover:bg-brand-green hover:text-white dark:bg-gray-900/95 dark:text-white dark:hover:bg-brand-green px-3 py-1.5 text-xs font-semibold opacity-0 transition duration-300 group-hover:opacity-100 shadow-md cursor-pointer"
         >
           <Eye className="h-3.5 w-3.5" /> Quick View
         </Link>
