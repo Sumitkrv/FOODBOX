@@ -16,41 +16,49 @@ export default function SmartFeatures() {
   const [chop, setChop] = useState("medium");
 
   return (
-    <section className="py-20 dark:bg-gray-950" id="features">
+    <section className="py-20 bg-brand-cream dark:bg-deep-forest" id="features">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="text-center">
-          <h2 className="section-title">Smart Features</h2>
-          <p className="section-subtitle mx-auto">Technology that makes healthy cooking effortless</p>
+        <div className="text-center mb-16">
+          <h2 className="font-serif text-3xl font-extrabold text-brand-green dark:text-white md:text-4xl mb-4">
+            Smart Features
+          </h2>
+          <p className="text-gray-650 dark:text-gray-400 max-w-xl mx-auto font-medium">
+            Technology that makes healthy cooking effortless.
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <motion.div
               key={f.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="card-base p-6 hover:shadow-card-hover"
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-black/5 dark:border-gray-800/50 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
-              <f.icon className="h-8 w-8 text-brand-green" />
-              <h3 className="mt-4 font-semibold text-gray-900 dark:text-white">{f.title}</h3>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{f.desc}</p>
+              <div className="w-12 h-12 rounded-2xl bg-brand-green/5 dark:bg-brand-green-light/10 flex items-center justify-center text-brand-green dark:text-brand-green-light">
+                <f.icon className="h-6 w-6" />
+              </div>
+              <h3 className="mt-6 font-serif text-lg font-bold text-brand-green dark:text-white">{f.title}</h3>
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium">{f.desc}</p>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-12 grid gap-8 rounded-3xl bg-gradient-to-br from-brand-green/10 to-brand-orange/10 p-8 md:grid-cols-2 dark:from-brand-green/20 dark:to-brand-orange/20">
+        <div className="mt-12 grid gap-8 rounded-3xl bg-gradient-to-br from-brand-green/5 to-brand-orange/5 p-8 md:grid-cols-2 dark:from-brand-green/10 dark:to-brand-orange/10 border border-brand-green/5 dark:border-gray-800/30">
           <div>
-            <h3 className="text-lg font-bold">Spice Level</h3>
-            <div className="mt-4 flex gap-2">
+            <h3 className="font-serif text-lg font-bold text-brand-green dark:text-white">Spice Level</h3>
+            <div className="mt-4 flex gap-2 flex-wrap">
               {[1, 2, 3, 4, 5].map((level) => (
                 <button
                   key={level}
                   type="button"
                   onClick={() => setSpice(level)}
-                  className={`flex-1 rounded-xl py-3 text-sm font-medium transition ${
-                    spice === level ? "bg-brand-orange text-white" : "bg-white dark:bg-gray-800"
+                  className={`flex-1 min-w-[70px] rounded-xl py-3 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
+                    spice === level
+                      ? "bg-brand-orange text-white shadow-md shadow-brand-orange/15"
+                      : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-black/5 dark:border-gray-750"
                   }`}
                 >
                   {spiceLabels[level - 1]}
@@ -59,15 +67,17 @@ export default function SmartFeatures() {
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-bold">Chopping Size</h3>
+            <h3 className="font-serif text-lg font-bold text-brand-green dark:text-white">Chopping Size</h3>
             <div className="mt-4 flex gap-2">
               {["fine", "medium", "coarse"].map((size) => (
                 <button
                   key={size}
                   type="button"
                   onClick={() => setChop(size)}
-                  className={`flex-1 rounded-xl py-3 text-sm font-medium capitalize transition ${
-                    chop === size ? "bg-brand-green text-white" : "bg-white dark:bg-gray-800"
+                  className={`flex-1 rounded-xl py-3 text-xs font-bold uppercase tracking-wider capitalize transition cursor-pointer ${
+                    chop === size
+                      ? "bg-brand-green text-white shadow-md shadow-brand-green/15"
+                      : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-black/5 dark:border-gray-750"
                   }`}
                 >
                   {size}

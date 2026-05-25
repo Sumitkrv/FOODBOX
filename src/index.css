@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Literata", Georgia, ui-serif, serif;
 
-  --color-brand-green: #2d6a4f;
-  --color-brand-green-light: #40916c;
-  --color-brand-green-dark: #1b4332;
-  --color-brand-orange: #f77f00;
-  --color-brand-orange-light: #fcbf49;
-  --color-brand-cream: #f8f9fa;
+  --color-brand-green: #012d1d;
+  --color-brand-green-light: #1b4332;
+  --color-brand-green-dark: #081C15;
+  --color-brand-orange: #904d00;
+  --color-brand-orange-light: #fe932c;
+  --color-brand-cream: #f9faf6;
+  --color-sage-wash: #E9F5EE;
+  --color-deep-forest: #081C15;
 
-  --shadow-card: 0 4px 24px rgb(45 106 79 / 0.08);
-  --shadow-card-hover: 0 12px 40px rgb(45 106 79 / 0.15);
-  --shadow-float: 0 8px 32px rgb(0 0 0 / 0.12);
+  --shadow-card: 0 4px 24px rgb(1 45 29 / 0.05);
+  --shadow-card-hover: 0 12px 40px rgb(1 45 29 / 0.1);
+  --shadow-float: 0 8px 32px rgb(0 0 0 / 0.08);
 
   --animate-pulse-soft: pulse-soft 2s infinite;
 }
@@ -33,25 +36,25 @@
   }
 
   body {
-    @apply bg-white text-gray-900 antialiased transition-colors duration-300;
+    @apply bg-brand-cream text-gray-900 font-sans antialiased transition-colors duration-300;
   }
 
   .dark body {
-    @apply bg-gray-950 text-gray-100;
+    @apply bg-deep-forest text-gray-100;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-orange px-6 py-3 font-semibold text-white shadow-lg shadow-orange-500/25 transition-all duration-300 hover:bg-orange-600 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange px-6 py-3 font-semibold text-white shadow-lg shadow-brand-orange/20 transition-all duration-300 hover:bg-orange-700 hover:shadow-brand-orange/30 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-brand-green bg-transparent px-6 py-3 font-semibold text-brand-green transition-all duration-300 hover:bg-brand-green hover:text-white dark:border-brand-green-light dark:text-brand-green-light dark:hover:bg-brand-green-light dark:hover:text-gray-900;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-brand-green bg-transparent px-6 py-3 font-semibold text-brand-green transition-all duration-300 hover:bg-brand-green hover:text-white dark:border-brand-green-light dark:text-brand-green-light dark:hover:bg-brand-green-light dark:hover:text-gray-900 cursor-pointer;
   }
 
   .section-title {
-    @apply text-3xl font-bold tracking-tight text-gray-900 dark:text-white md:text-4xl;
+    @apply text-3xl font-serif font-bold tracking-tight text-brand-green dark:text-white md:text-4xl;
   }
 
   .section-subtitle {
@@ -65,10 +68,10 @@
   .gradient-hero {
     background: linear-gradient(
       135deg,
-      #1b4332 0%,
-      #2d6a4f 40%,
-      #40916c 70%,
-      #f77f00 100%
+      #081C15 0%,
+      #012d1d 40%,
+      #1b4332 70%,
+      #904d00 100%
     );
   }
 

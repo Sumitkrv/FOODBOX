@@ -9,33 +9,44 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="bg-brand-cream py-20 dark:bg-gray-900" id="how-it-works">
+    <section className="bg-sage-wash py-20 dark:bg-brand-green-light/10" id="how-it-works">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="text-center">
-          <h2 className="section-title">How It Works</h2>
-          <p className="section-subtitle mx-auto">Three simple steps to delicious homemade meals</p>
+        <div className="text-center mb-16">
+          <h2 className="font-serif text-3xl font-extrabold text-brand-green dark:text-white md:text-4xl mb-4">
+            How It Works
+          </h2>
+          <p className="text-gray-650 dark:text-gray-400 max-w-xl mx-auto font-medium">
+            Three simple steps to delicious homemade meals without the stress.
+          </p>
         </div>
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          {/* Horizontal line for desktop */}
+          <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] bg-brand-green/10 dark:bg-white/10" />
+
           {steps.map((step, i) => (
             <motion.div
               key={step.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="relative text-center"
+              transition={{ delay: i * 0.15, duration: 0.6 }}
+              className="relative flex flex-col items-center text-center group z-10"
             >
-              {i < steps.length - 1 && (
-                <div className="absolute left-[60%] top-12 hidden h-0.5 w-[80%] bg-gradient-to-r from-brand-green to-brand-orange md:block" />
-              )}
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-card dark:bg-gray-800">
-                <step.icon className="h-10 w-10 text-brand-green" />
+              <div className="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-md dark:shadow-none border border-black/5 dark:border-gray-700 group-hover:bg-brand-green group-hover:text-white dark:group-hover:bg-brand-green-light transition-all duration-300">
+                <step.icon className="h-9 w-9 text-brand-green dark:text-brand-green-light group-hover:text-white transition-colors duration-300" />
               </div>
-              <span className="mt-4 inline-block rounded-full bg-brand-orange/10 px-3 py-1 text-sm font-bold text-brand-orange">
-                Step {i + 1}
-              </span>
-              <h3 className="mt-4 text-xl font-bold text-gray-900 dark:text-white">{step.title}</h3>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">{step.desc}</p>
+              <div className="mt-6">
+                <span className="text-brand-orange dark:text-brand-orange-light font-bold text-xs uppercase tracking-wider">
+                  Step {i + 1}
+                </span>
+                <h3 className="font-serif text-xl font-bold text-brand-green dark:text-white mt-2 mb-4">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 max-w-xs text-sm leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
