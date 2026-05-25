@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Package, Box, Truck, CheckCircle2, Inbox, MessageSquare, Phone, Search, ChevronDown, Check, Square, CheckSquare } from "lucide-react";
+import { Package, Box, Truck, CheckCircle, Inbox, MessageSquare, Phone, Search, ChevronDown, Check, Square, CheckSquare } from "lucide-react";
 import { mealKits } from "@/lib/data";
 
 const stages = [
   { id: "preparing", label: "Preparing", icon: Package, desc: "Chopping fresh vegetables...", date: "May 25, 11:45 AM" },
   { id: "packed", label: "Packed", icon: Box, desc: "Packing your FOODBOX...", date: "May 25, 02:30 PM" },
   { id: "delivery", label: "In Transit", icon: Truck, desc: "Rahul is on the way • ETA 18 min", date: "May 26, 08:30 AM" },
-  { id: "delivered", label: "Delivered", icon: CheckCircle2, desc: "Enjoy your meal!", date: "Estimated Today" },
+  { id: "delivered", label: "Delivered", icon: CheckCircle, desc: "Enjoy your meal!", date: "Estimated Today" },
 ];
 
 const faqs = [
@@ -95,7 +95,7 @@ export default function TrackPage() {
           <h1 className="font-serif text-[42px] leading-tight font-extrabold text-brand-green dark:text-white mb-6">
             Track Your Harvest
           </h1>
-          <p className="text-base md:text-lg text-gray-655 dark:text-gray-400 max-w-2xl mx-auto mb-12 font-medium">
+          <p className="text-base md:text-lg text-gray-600 dark:text-gray-405 max-w-2xl mx-auto mb-12 font-medium">
             Enter your order ID found in your confirmation email to see exactly where your farm-fresh ingredients are on their journey to your kitchen.
           </p>
 
@@ -155,7 +155,7 @@ export default function TrackPage() {
         <div className="max-w-4xl mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
             {/* Desktop progress bar */}
-            <div className="hidden md:block absolute top-8 left-12 right-12 h-0.5 bg-gray-150 dark:bg-gray-800 z-0">
+            <div className="hidden md:block absolute top-8 left-12 right-12 h-0.5 bg-gray-200 dark:bg-gray-800 z-0">
               <div
                 className="h-full bg-brand-green dark:bg-brand-green-light transition-all duration-1000"
                 style={{ width: progressWidth }}
@@ -288,7 +288,7 @@ export default function TrackPage() {
                       className={`flex items-center gap-3.5 rounded-2xl border p-4 text-left transition-all duration-200 cursor-pointer ${
                         isChecked
                           ? "border-brand-green/10 bg-brand-green/5 text-gray-400 dark:border-brand-green/5 dark:bg-brand-green/5 line-through"
-                          : "border-gray-150 dark:border-gray-800 hover:border-brand-orange bg-white dark:bg-gray-900/60 hover:shadow-sm"
+                          : "border-gray-200 dark:border-gray-800 hover:border-brand-orange bg-white dark:bg-gray-900/60 hover:shadow-sm"
                       }`}
                     >
                       {isChecked ? (
