@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { hoverLiftSm, tapPress } from "@/lib/animations";
+import { hoverLiftSm, tapPress, ease } from "@/lib/animations";
 
 export default function CartSidebar() {
   const { items, isOpen, setIsOpen, updateQuantity, removeItem, total } = useCart();
@@ -102,13 +102,13 @@ export default function CartSidebar() {
                               {item.kit.name}
                             </h3>
                             <p className="text-[10px] font-semibold text-gray-400 mt-0.5">
-                              {item.persons} servings per order
+                              {(item.persons || item.kit.servings || 1)} servings per order
                             </p>
                           </div>
 
                           <div className="flex items-center justify-between mt-2">
                             <span className="font-extrabold text-sm text-[#FF6B35]">
-                              ₹{Math.round((item.kit.price / (item.kit.servings || 1)) * item.persons * item.quantity)}
+                              ₹{Math.round((item.kit.price / (item.kit.servings || 1)) * (item.persons || item.kit.servings || 1) * item.quantity)}
                             </span>
 
                             {/* Quantity Controls */}

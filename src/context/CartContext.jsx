@@ -34,7 +34,7 @@ export function CartProvider({ children }) {
   const total = items.reduce((sum, i) => {
     const baseServings = i.kit.servings || 1;
     const pricePerPerson = i.kit.price / baseServings;
-    const itemTotal = Math.round(pricePerPerson * i.persons) * i.quantity;
+    const itemTotal = Math.round(pricePerPerson * (i.persons || baseServings)) * i.quantity;
     return sum + itemTotal;
   }, 0);
 

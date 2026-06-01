@@ -310,7 +310,7 @@ export default function CheckoutPage() {
                         {/* Custom Portion scaling details list inside summary */}
                         <div className="mt-2.5 pl-3 border-l-2 border-orange-200">
                           <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider flex items-center gap-1">
-                            <Sparkles className="h-3 w-3 text-amber-500" /> Prepped Ingredients ({(item.kit.servings || baseServings) * item.quantity} servings):
+                            <Sparkles className="h-3 w-3 text-amber-500" /> Prepped Ingredients ({Math.round((item.persons || item.kit.servings || baseServings) * item.quantity)} servings):
                           </p>
                           <div className="mt-1.5 flex flex-wrap gap-1.5">
                             {item.kit.ingredients.map((ing) => (
@@ -318,7 +318,7 @@ export default function CheckoutPage() {
                                 key={ing.name}
                                 className="inline-flex items-center gap-1 rounded-lg bg-[#FAFAF8] border border-gray-150/45 px-2 py-0.5 text-[10px] font-bold text-gray-500"
                               >
-                                {ing.name}: <strong className="text-[#FF6B35] font-mono font-bold">{(ing.amount / (item.kit.servings || baseServings)) * item.persons * item.quantity} {ing.unit}</strong>
+                                {ing.name}: <strong className="text-[#FF6B35] font-mono font-bold">{Number(((ing.amount / (item.kit.servings || baseServings)) * (item.persons || item.kit.servings || baseServings) * item.quantity).toFixed(1))} {ing.unit}</strong>
                               </span>
                             ))}
                           </div>
