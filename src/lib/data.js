@@ -17,7 +17,7 @@ export const mealKits = [
     category: "paneer",
     cookTime: 15,
     spiceLevel: 2,
-    servings: 2,
+    servings: 1,
     price: 249,
     description:
       "Fresh spinach puree, paneer cubes, and aromatic spices — cook restaurant-style palak paneer at home.",
@@ -52,7 +52,7 @@ export const mealKits = [
     category: "dal",
     cookTime: 12,
     spiceLevel: 3,
-    servings: 3,
+    servings: 1,
     price: 179,
     description: "Pre-soaked toor dal with tadka spices ready to temper and serve.",
     ingredients: [
@@ -80,7 +80,7 @@ export const mealKits = [
     category: "paneer",
     cookTime: 18,
     spiceLevel: 2,
-    servings: 2,
+    servings: 1,
     price: 269,
     description: "Rich tomato-cashew gravy with soft paneer — a crowd favourite.",
     ingredients: [
@@ -109,7 +109,7 @@ export const mealKits = [
     category: "veg-curry",
     cookTime: 15,
     spiceLevel: 2,
-    servings: 3,
+    servings: 1,
     price: 199,
     description: "Chopped seasonal vegetables with curry masala — wholesome and quick.",
     ingredients: [
@@ -139,7 +139,7 @@ export const mealKits = [
     category: "rice",
     cookTime: 10,
     spiceLevel: 1,
-    servings: 2,
+    servings: 1,
     price: 89,
     description: "Pre-washed basmati rice with cumin tempering sachet.",
     ingredients: [
@@ -165,7 +165,7 @@ export const mealKits = [
     category: "roti",
     cookTime: 5,
     spiceLevel: 1,
-    servings: 2,
+    servings: 1,
     price: 59,
     description: "Soft whole-wheat rotis, ready to heat and serve.",
     ingredients: [
@@ -243,7 +243,7 @@ export const mealKits = [
     category: "quick",
     cookTime: 15,
     spiceLevel: 2,
-    servings: 2,
+    servings: 1,
     price: 159,
     description: "Flash-fry mix with Asian-style sauce sachet.",
     ingredients: [
@@ -266,44 +266,7 @@ export const mealKits = [
   },
 ];
 
-export const subscriptionPlans = [
-  {
-    id: "bachelor",
-    name: "Bachelor Plan",
-    price: 999,
-    period: "/week",
-    meals: "5 meals",
-    features: ["Free delivery", "10% discount", "Flexible skip days", "Single servings"],
-    popular: false,
-  },
-  {
-    id: "family",
-    name: "Family Plan",
-    price: 2499,
-    period: "/week",
-    meals: "12 meals",
-    features: ["Free delivery", "20% discount", "Scheduled deliveries", "Family-size portions"],
-    popular: true,
-  },
-  {
-    id: "gym",
-    name: "Gym Diet Plan",
-    price: 1799,
-    period: "/week",
-    meals: "7 protein meals",
-    features: ["Macro-balanced", "15% discount", "Nutrition tracking", "Custom spice level"],
-    popular: false,
-  },
-  {
-    id: "weekly",
-    name: "Weekly Meal Plan",
-    price: 1499,
-    period: "/week",
-    meals: "10 mixed meals",
-    features: ["Free delivery", "Meal planner access", "AI recommendations", "Cashback 5%"],
-    popular: false,
-  },
-];
+
 
 export const addOns = [
   { id: "extra-roti", name: "Extra Roti (4 pcs)", price: 39 },

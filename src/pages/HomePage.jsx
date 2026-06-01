@@ -1,23 +1,23 @@
-import Hero from "@/components/home/Hero";
-import Categories from "@/components/home/Categories";
-import HowItWorks from "@/components/home/HowItWorks";
-import FeaturedProducts from "@/components/home/FeaturedProducts";
-import SmartFeatures from "@/components/home/SmartFeatures";
-import SubscriptionPreview from "@/components/home/SubscriptionPreview";
-import Offers from "@/components/home/Offers";
-import Testimonials from "@/components/home/Testimonials";
+import Hero from '../components/home/Hero';
+import TrustBar from '../components/home/TrustBar';
+import HowItWorks from '../components/home/HowItWorks';
+import FeaturedMealKits from '../components/home/FeaturedMealKits';
+import WhyFoodbox from '../components/home/WhyFoodbox';
+import CustomerStories from '../components/home/CustomerStories';
+import FAQ from '../components/home/FAQ';
+import FinalCTA from '../components/home/FinalCTA';
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Categories />
+      <TrustBar />
       <HowItWorks />
-      <FeaturedProducts />
-      <SmartFeatures />
-      <SubscriptionPreview />
-      <Offers />
-      <Testimonials />
+      <FeaturedMealKits />
+      <WhyFoodbox />
+      <CustomerStories />
+      <FAQ />
+      <FinalCTA />
     </>
   );
 }

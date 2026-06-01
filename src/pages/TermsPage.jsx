@@ -9,8 +9,8 @@ export default function TermsPage() {
       content: "By accessing and using FOODBOX (the 'Service'), you agree to be bound by these Terms and Conditions. If you do not agree, please do not use our services. We reserve the right to update these terms at any time.",
     },
     {
-      title: "2. Subscription & Billing",
-      content: "FOODBOX offers weekly and monthly subscription plans. Your subscription will automatically renew at the end of each billing cycle unless paused or cancelled. You can manage, pause, or terminate your subscription directly from your customer dashboard at least 48 hours before your next scheduled delivery.",
+      title: "2. Ordering & Payment",
+      content: "FOODBOX allows you to order meal kits directly from our site. Payment is required at the time of purchase. You can manage your active orders from your customer dashboard.",
     },
     {
       title: "3. Delivery & Ingredient Safety",

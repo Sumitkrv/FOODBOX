@@ -10,7 +10,6 @@ const tabs = [
   { id: "addresses", label: "Saved Addresses", icon: MapPin },
   { id: "favorites", label: "Favorite Meals", icon: Heart },
   { id: "wallet", label: "Wallet & Credits", icon: Wallet },
-  { id: "subscription", label: "Active Subscription", icon: RefreshCw },
 ];
 
 const mockOrders = [
@@ -26,7 +25,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-brand-cream dark:bg-gray-950 pb-20">
       <PageHero
         title="My Dashboard"
-        subtitle="Manage your meal kit subscriptions, active orders, saved addresses and wallet."
+        subtitle="Manage your active orders, saved addresses and wallet."
         breadcrumbs={[{ label: "Dashboard" }]}
       />
 
@@ -34,7 +33,7 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Welcome Back, Amit!</h2>
-            <p className="text-gray-500 text-sm mt-1">Here is a quick look at your food status and subscription history.</p>
+            <p className="text-gray-500 text-sm mt-1">Here is a quick look at your food status and history.</p>
           </div>
           <Link to="/meal-kits" className="btn-secondary self-start text-sm py-2 px-5 font-semibold">
             <RefreshCw className="h-4 w-4" /> Reorder Favorites
@@ -54,14 +53,14 @@ export default function DashboardPage() {
                     onClick={() => setActive(t.id)}
                     className={`flex w-full items-center gap-3 px-5 py-4 text-left text-sm font-semibold transition-all relative ${
                       isActive
-                        ? "bg-gradient-to-r from-brand-green/10 to-transparent text-brand-green dark:text-brand-green-light"
+                        ? "bg-gradient-to-r from-brand-green/10 to-transparent text-brand-green dark:text-emerald-400"
                         : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
                     }`}
                   >
                     {isActive && (
-                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-brand-green dark:bg-brand-green-light" />
+                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-brand-green dark:bg-emerald-400" />
                     )}
-                    <t.icon className={`h-5 w-5 ${isActive ? "text-brand-green dark:text-brand-green-light" : "text-gray-400"}`} />
+                    <t.icon className={`h-5 w-5 ${isActive ? "text-brand-green dark:text-emerald-400" : "text-gray-400"}`} />
                     <span>{t.label}</span>
                     <ChevronRight className={`ml-auto h-4 w-4 transition-transform duration-200 ${isActive ? "translate-x-1 opacity-100" : "opacity-30"}`} />
                   </button>
@@ -96,7 +95,7 @@ export default function DashboardPage() {
                           {o.status}
                         </span>
                         <p className="font-extrabold text-brand-green">₹{o.total}</p>
-                        <Link to="/track" className="text-sm font-bold text-brand-orange hover:underline">
+                        <Link to="/track" className="text-sm font-bold text-brand-orange dark:text-brand-orange-light hover:underline">
                           Track / Reorder
                         </Link>
                       </li>
@@ -176,33 +175,7 @@ export default function DashboardPage() {
                 </motion.div>
               )}
 
-              {active === "subscription" && (
-                <motion.div
-                  key="subscription-tab"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.25 }}
-                  className="card-base p-6 border border-gray-100 dark:border-gray-800 shadow-sm"
-                >
-                  <h3 className="font-extrabold text-gray-900 dark:text-white text-lg border-b border-gray-100 dark:border-gray-800 pb-3">Active Subscription</h3>
-                  <div className="mt-4 p-5 rounded-2xl bg-brand-cream dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-                    <p className="font-bold text-brand-orange text-lg">Family Plan</p>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 font-semibold">Renews automatically on May 25, 2026</p>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <button type="button" className="btn-secondary text-xs py-2 px-5 font-bold">
-                        Pause Subscription
-                      </button>
-                      <button type="button" className="rounded-full border border-red-200 hover:border-red-500 hover:bg-red-50 hover:text-red-700 px-5 py-2 text-xs font-bold text-red-600 dark:border-red-900/50 dark:hover:bg-red-950/20 transition">
-                        Cancel Renewal
-                      </button>
-                      <Link to="/subscription" className="btn-primary text-xs py-2 px-5 font-bold">
-                        Change Plan
-                      </Link>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
+
             </AnimatePresence>
           </div>
         </div>

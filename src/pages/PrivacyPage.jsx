@@ -7,7 +7,7 @@ export default function PrivacyPage() {
     {
       icon: Eye,
       title: "Data We Collect",
-      content: "We collect basic contact information (name, email address, shipping address, and phone number) to process your orders and handle subscription deliveries smoothly. We also monitor site usage using secure cookies to optimize your experience.",
+      content: "We collect basic contact information (name, email address, shipping address, and phone number) to process your orders and handle deliveries smoothly. We also monitor site usage using secure cookies to optimize your experience.",
     },
     {
       icon: Lock,

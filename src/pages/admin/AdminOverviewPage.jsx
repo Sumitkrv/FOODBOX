@@ -32,7 +32,7 @@ const revenueData = [
 const categorySales = [
   { label: "Meal Kits", value: 1240, color: "bg-green-500" },
   { label: "Add-ons", value: 420, color: "bg-amber-500" },
-  { label: "Subscriptions", value: 890, color: "bg-orange-500" },
+  { label: "Desserts", value: 310, color: "bg-orange-500" },
 ];
 
 export default function AdminOverviewPage() {
@@ -43,7 +43,7 @@ export default function AdminOverviewPage() {
           { label: "Revenue (7d)", value: "₹4.2L", change: "+12%", icon: DollarSign },
           { label: "Orders", value: "1,284", change: "+8%", icon: ShoppingBag },
           { label: "Avg. Order", value: "₹327", change: "+3%", icon: TrendingUp },
-          { label: "Active Subs", value: "412", change: "+5%", icon: TrendingUp },
+          { label: "Active Users", value: "842", change: "+5%", icon: TrendingUp },
         ].map((card) => (
           <div key={card.label} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg">
             <div className="flex items-center justify-between">

@@ -4,7 +4,6 @@ import AdminLayout from "@/layouts/AdminLayout";
 import HomePage from "@/pages/HomePage";
 import MealKitsPage from "@/pages/MealKitsPage";
 import ProductPage from "@/pages/ProductPage";
-import SubscriptionPage from "@/pages/SubscriptionPage";
 import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
 import TrackPage from "@/pages/TrackPage";
@@ -30,7 +29,6 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/meal-kits" element={<MealKitsPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/subscription" element={<SubscriptionPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/track" element={<TrackPage />} />

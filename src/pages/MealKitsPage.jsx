@@ -1,106 +1,337 @@
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useMemo, useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Search, SlidersHorizontal, ShoppingCart, Eye } from "lucide-react";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { Search, SlidersHorizontal, Sparkles, X, ArrowRight, RefreshCw } from "lucide-react";
 import { mealKits, categories, spiceLabels } from "@/lib/data";
-import { useCart } from "@/context/CartContext";
+import MealKitCard from "@/components/ui/MealKitCard";
+import ProductSkeleton from "@/components/ui/ProductSkeleton";
 
+/* ─── Animation variants ──────────────────────────────────── */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show:   { opacity: 1, transition: { staggerChildren: 0.045 } },
+  exit:   { opacity: 0, transition: { duration: 0.15 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 18, scale: 0.97 },
+  show:   { opacity: 1, y: 0,  scale: 1,   transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] } },
+  exit:   { opacity: 0, y: -8, scale: 0.96, transition: { duration: 0.2 } },
+};
+
+/* ─── Compute auto-fit grid columns based on result count ──── */
+function gridClass(count) {
+  if (count === 0) return "";
+  if (count === 1) return "grid-cols-1 max-w-sm mx-auto";
+  if (count === 2) return "grid-cols-1 sm:grid-cols-2 max-w-xl mx-auto";
+  if (count === 3) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+}
+
+/* ─── Skeleton loader grid ────────────────────────────────── */
+function SkeletonGrid({ count = 8 }) {
+  return (
+    <div className={`grid ${gridClass(count)} gap-5 mt-12`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <ProductSkeleton key={i} />
+      ))}
+    </div>
+  );
+}
+
+/* ─── "You might also like" recommendation strip ─────────── */
+function RecommendedStrip({ excluded, onReset }) {
+  const recommended = useMemo(
+    () => mealKits.filter((k) => !excluded.includes(k.id)).slice(0, 4),
+    [excluded]
+  );
+  if (recommended.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 12 }}
+      transition={{ duration: 0.45 }}
+      className="mt-16"
+    >
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <span
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold mb-2"
+            style={{ background: 'rgba(255,107,53,0.08)', color: '#FF6B35', border: '1px solid rgba(255,107,53,0.15)' }}
+          >
+            <Sparkles size={11} /> You Might Like
+          </span>
+          <h3 className="text-lg font-extrabold text-gray-900 tracking-tight">Popular picks from our full menu</h3>
+        </div>
+        <button
+          onClick={onReset}
+          className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+        >
+          <RefreshCw size={14} /> Clear filters
+        </button>
+      </div>
+
+      <div className={`grid ${gridClass(recommended.length)} gap-5`}>
+        {recommended.map((kit) => {
+          const categoryName = categories.find((c) => c.id === kit.category)?.name || "";
+          return (
+            <motion.div key={kit.id} variants={itemVariants} initial="hidden" animate="show">
+              <MealKitCard kit={kit} categoryName={categoryName} />
+            </motion.div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Active filter pill row ─────────────────────────────── */
+function ActiveFilterPills({ search, spiceFilter, categoryFilter, onClearSearch, onClearSpice }) {
+  const activeFilters = [];
+  if (categoryFilter) {
+    const cat = categories.find((c) => c.id === categoryFilter);
+    if (cat) activeFilters.push({ label: `${cat.icon} ${cat.name}`, key: "category" });
+  }
+  if (spiceFilter !== null) activeFilters.push({ label: `🌶️ ${spiceLabels[spiceFilter - 1]}`, key: "spice", onClear: onClearSpice });
+  if (search) activeFilters.push({ label: `"${search}"`, key: "search", onClear: onClearSearch });
+
+  if (activeFilters.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      className="flex flex-wrap items-center gap-2 mb-6 overflow-hidden"
+    >
+      <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Active:</span>
+      {activeFilters.map(({ label, key, onClear }) => (
+        <span
+          key={key}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+          style={{ background: 'rgba(255,107,53,0.08)', color: '#FF6B35', border: '1px solid rgba(255,107,53,0.18)' }}
+        >
+          {label}
+          {onClear && (
+            <button onClick={onClear} className="hover:opacity-70 transition-opacity ml-0.5" aria-label={`Remove ${key} filter`}>
+              <X size={11} strokeWidth={2.5} />
+            </button>
+          )}
+        </span>
+      ))}
+    </motion.div>
+  );
+}
+
+/* ─── Smart empty state ──────────────────────────────────── */
+function EmptyState({ search, spiceFilter, onReset }) {
+  return (
+    <motion.div
+      key="empty-state"
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.35 }}
+      className="py-20 text-center"
+    >
+      <div
+        className="inline-flex w-20 h-20 rounded-full items-center justify-center mx-auto mb-6 text-3xl"
+        style={{ background: 'rgba(255,107,53,0.06)', border: '1.5px dashed rgba(255,107,53,0.25)' }}
+      >
+        {search ? "🔍" : "🌶️"}
+      </div>
+      <h3 className="text-xl font-extrabold text-gray-900 mb-2 tracking-tight">No results found</h3>
+      <p className="text-sm text-gray-400 max-w-xs mx-auto leading-relaxed mb-8">
+        {search
+          ? `No meal kits matched "${search}". Try a different keyword.`
+          : spiceFilter
+          ? `No kits at that spice level right now. Try a different heat level.`
+          : "No kits match all your filters together. Try relaxing one."}
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <button
+          onClick={onReset}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white"
+          style={{ background: '#FF6B35', boxShadow: '0 4px 14px rgba(255,107,53,0.3)' }}
+        >
+          <RefreshCw size={14} /> Reset All Filters
+        </button>
+        <Link
+          to="/meal-kits"
+          className="inline-flex items-center gap-1.5 px-6 py-3 rounded-xl text-sm font-semibold text-gray-600 border border-gray-200 hover:border-gray-300 bg-white transition"
+        >
+          Browse All Kits <ArrowRight size={14} />
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Result count badge ─────────────────────────────────── */
+function ResultCount({ count, total, isFiltering }) {
+  if (!isFiltering) return null;
+  return (
+    <motion.span
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="text-xs font-semibold text-gray-400 ml-auto shrink-0"
+    >
+      {count} of {total} kits
+    </motion.span>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Main page component
+═══════════════════════════════════════════════════════════ */
 function MealKitsContent() {
   const [searchParams] = useSearchParams();
   const categoryFilter = searchParams.get("category") || "";
-  const [search, setSearch] = useState("");
+  const [search, setSearch]           = useState("");
   const [spiceFilter, setSpiceFilter] = useState(null);
-  const { addItem } = useCart();
+  const [isFiltering, setIsFiltering] = useState(false);
+  const filterTimer = useRef(null);
+
+  // Simulate brief transition delay when filters change
+  const handleSearch = (val) => {
+    setSearch(val);
+    setIsFiltering(true);
+    clearTimeout(filterTimer.current);
+    filterTimer.current = setTimeout(() => setIsFiltering(false), 280);
+  };
+
+  const handleSpice = (val) => {
+    setSpiceFilter(val);
+    setIsFiltering(true);
+    clearTimeout(filterTimer.current);
+    filterTimer.current = setTimeout(() => setIsFiltering(false), 280);
+  };
+
+  useEffect(() => () => clearTimeout(filterTimer.current), []);
 
   const filtered = useMemo(() => {
     return mealKits.filter((kit) => {
       const matchCategory = !categoryFilter || kit.category === categoryFilter;
-      const matchSearch = kit.name.toLowerCase().includes(search.toLowerCase());
-      const matchSpice = spiceFilter === null || kit.spiceLevel === spiceFilter;
+      const matchSearch   = kit.name.toLowerCase().includes(search.toLowerCase());
+      const matchSpice    = spiceFilter === null || kit.spiceLevel === spiceFilter;
       return matchCategory && matchSearch && matchSpice;
     });
   }, [categoryFilter, search, spiceFilter]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-      },
-    },
-  };
+  const hasActiveFilters = !!search || spiceFilter !== null || !!categoryFilter;
+  const showRecommended  = !isFiltering && filtered.length > 0 && filtered.length <= 3 && hasActiveFilters;
+  const showEmpty        = !isFiltering && filtered.length === 0;
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
+  const resetFilters = () => {
+    setSearch("");
+    setSpiceFilter(null);
   };
 
   return (
-    <div className="min-h-screen bg-brand-cream dark:bg-deep-forest pb-24 pt-28">
-      <main className="max-w-7xl mx-auto px-4 lg:px-8">
-        {/* Header Section */}
-        <header className="mb-12">
-          <h1 className="font-serif text-[42px] leading-tight font-extrabold text-brand-green dark:text-white mb-4">
+    <div className="min-h-screen bg-canvas pb-28 pt-28 relative overflow-hidden">
+      {/* ── Ambient glows ── */}
+      <div className="absolute top-0 right-0 w-[600px] h-[400px] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 80% 0%, rgba(255,107,53,0.06) 0%, transparent 65%)' }} />
+      <div className="absolute top-1/3 left-0 w-[400px] h-[300px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.04) 0%, transparent 70%)' }} />
+
+      <main className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative">
+
+        {/* ── Page Header ── */}
+        <header className="mb-14 text-center sm:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold mb-5"
+            style={{ background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.18)', color: '#FF6B35' }}
+          >
+            <Sparkles size={12} /> Our Weekly Menu
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.05 }}
+            className="text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-tight text-gray-900 mb-5"
+          >
             Indian Culinary Classics
-          </h1>
-          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed font-medium">
-            Chef-curated meal kits featuring authentic spices and farm-fresh ingredients. Experience the heritage of traditional Indian kitchens, delivered to your doorstep.
-          </p>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-base md:text-lg text-gray-500 max-w-2xl leading-relaxed"
+          >
+            Chef-curated meal kits featuring authentic spices and farm-fresh ingredients.
+            Experience the heritage of traditional Indian kitchens, delivered to your doorstep.
+          </motion.p>
         </header>
 
-        {/* Filters/Chips (Visual Context & Interactivity) */}
-        <div className="flex gap-3 mb-8 overflow-x-auto pb-3 scrollbar-hide">
-          <Link
-            to="/meal-kits"
-            className={`px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition duration-300 shrink-0 cursor-pointer ${
-              !categoryFilter
-                ? "bg-brand-green text-white shadow-md shadow-brand-green/20"
-                : "bg-sage-wash text-brand-green border border-brand-green/10 hover:bg-brand-green/10 dark:bg-brand-green-light/20 dark:text-brand-green-light"
-            }`}
-          >
-            All Categories
-          </Link>
-          {categories.map((cat) => (
+        {/* ── Category filter chips ── */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="mb-8">
+          <div className="flex gap-2.5 overflow-x-auto pb-3 scrollbar-hide -mx-5 px-5 sm:mx-0 sm:px-0">
             <Link
-              key={cat.id}
-              to={`/meal-kits?category=${cat.id}`}
-              className={`px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition duration-300 shrink-0 cursor-pointer ${
-                categoryFilter === cat.id
-                  ? "bg-brand-green text-white shadow-md shadow-brand-green/20"
-                  : "bg-sage-wash text-brand-green border border-brand-green/10 hover:bg-brand-green/10 dark:bg-brand-green-light/20 dark:text-brand-green-light"
+              to="/meal-kits"
+              className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${
+                !categoryFilter
+                  ? "bg-cta text-white shadow-[0_4px_16px_rgba(255,107,53,0.25)]"
+                  : "bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
               }`}
             >
-              {cat.icon} {cat.name}
+              All Categories
             </Link>
-          ))}
-        </div>
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                to={`/meal-kits?category=${cat.id}`}
+                className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${
+                  categoryFilter === cat.id
+                    ? "bg-cta text-white shadow-[0_4px_16px_rgba(255,107,53,0.25)]"
+                    : "bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                <span className="mr-1.5">{cat.icon}</span>{cat.name}
+              </Link>
+            ))}
+          </div>
+        </motion.div>
 
-        {/* Filter bar container (Search & Spiciness) */}
-        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-black/5 dark:border-gray-800 shadow-sm mb-12">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        {/* ── Search & Spice filter bar ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white rounded-3xl p-5 border border-gray-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] mb-6"
+        >
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            {/* Search */}
             <div className="relative max-w-md flex-1">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <input
                 type="search"
                 placeholder="Search meal kits..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-sm text-gray-900 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20 dark:border-gray-700 dark:bg-gray-850 dark:text-white"
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-11 pr-10 text-sm text-gray-900 focus:border-cta focus:outline-none focus:ring-4 focus:ring-cta/5 transition"
               />
+              {search && (
+                <button
+                  onClick={() => handleSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X size={15} />
+                </button>
+              )}
             </div>
+
+            {/* Spice levels */}
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mr-2 text-sm font-semibold">
+              <div className="flex items-center gap-2 text-gray-500 mr-2 text-sm font-semibold">
                 <SlidersHorizontal className="h-4 w-4" />
-                <span>Spiciness:</span>
+                <span>Spice:</span>
               </div>
               <button
                 type="button"
-                onClick={() => setSpiceFilter(null)}
-                className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
+                onClick={() => handleSpice(null)}
+                className={`rounded-xl px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                   spiceFilter === null
-                    ? "bg-brand-green text-white shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-755"
+                    ? "bg-gray-900 text-white shadow-md shadow-gray-900/10"
+                    : "bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300"
                 }`}
               >
                 All
@@ -109,11 +340,11 @@ function MealKitsContent() {
                 <button
                   key={label}
                   type="button"
-                  onClick={() => setSpiceFilter(i + 1)}
-                  className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
+                  onClick={() => handleSpice(i + 1)}
+                  className={`rounded-xl px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     spiceFilter === i + 1
-                      ? "bg-brand-orange text-white shadow-md shadow-brand-orange/20"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-755"
+                      ? "bg-cta text-white shadow-md shadow-cta/10"
+                      : "bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300"
                   }`}
                 >
                   {label}
@@ -121,110 +352,112 @@ function MealKitsContent() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Catalog Grid (Visual Overhaul matching exact layout grid: cols-2 gap-12) */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12"
-        >
-          {filtered.map((kit) => {
-            const categoryName = categories.find((c) => c.id === kit.category)?.name || "FOODBOX Gourmet";
-            return (
-              <motion.article
-                key={kit.id}
-                variants={itemVariants}
-                className="group bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl border border-black/5 dark:border-gray-800 transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between"
-              >
-                <div className="aspect-video overflow-hidden relative">
-                  <img
-                    alt={kit.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    src={kit.image}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
-                  <Link
-                    to={`/product/${kit.id}`}
-                    className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/95 text-gray-900 hover:bg-brand-green hover:text-white dark:bg-gray-900/95 dark:text-white dark:hover:bg-brand-green px-3.5 py-2 text-xs font-bold opacity-0 transition duration-300 group-hover:opacity-100 shadow-md cursor-pointer"
-                  >
-                    <Eye className="h-4 w-4" /> Quick View
-                  </Link>
-                </div>
-                <div className="p-8 flex flex-col flex-grow justify-between">
-                  <div>
-                    <div className="flex justify-between items-start mb-4 gap-4">
-                      <div>
-                        <span className="font-serif font-bold text-xs uppercase tracking-widest text-brand-orange mb-2 block">
-                          {categoryName}
-                        </span>
-                        <h2 className="font-serif text-2xl font-bold text-brand-green dark:text-white">
-                          {kit.name}
-                        </h2>
-                      </div>
-                      <span className="font-serif text-2xl font-black text-brand-green dark:text-brand-green-light shrink-0">
-                        ₹{kit.price}
-                      </span>
-                    </div>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base mb-8 line-clamp-2 leading-relaxed">
-                      {kit.description}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-6 border-t border-gray-100 dark:border-gray-800">
-                    <div className="flex gap-2">
-                      <span className="px-3 py-1 bg-sage-wash dark:bg-brand-green-light/25 text-brand-green dark:text-brand-green-light rounded-full text-xs font-bold">
-                        {kit.cookTime} min prep
-                      </span>
-                      <span className="px-3 py-1 bg-sage-wash dark:bg-brand-green-light/25 text-brand-green dark:text-brand-green-light rounded-full text-xs font-bold">
-                        {spiceLabels[kit.spiceLevel - 1]}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => addItem(kit)}
-                      className="bg-brand-orange text-white px-6 py-3.5 rounded-xl font-bold hover:bg-orange-700 transition-all hover:shadow-lg shadow-brand-orange/15 active:scale-95 flex items-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
-                    >
-                      <ShoppingCart className="h-4 w-4" /> Add to Box
-                    </button>
-                  </div>
-                </div>
-              </motion.article>
-            );
-          })}
         </motion.div>
 
-        {filtered.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="py-20 text-center"
-          >
-            <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
-              No meal kits found. Try adjusting filters or search query.
-            </p>
-          </motion.div>
-        )}
+        {/* ── Active filter pills + result count ── */}
+        <AnimatePresence>
+          {hasActiveFilters && (
+            <motion.div
+              key="filter-row"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25 }}
+              className="flex items-center gap-3 flex-wrap mb-6 overflow-hidden"
+            >
+              <ActiveFilterPills
+                search={search}
+                spiceFilter={spiceFilter}
+                categoryFilter={categoryFilter}
+                onClearSearch={() => handleSearch("")}
+                onClearSpice={() => handleSpice(null)}
+              />
+              <ResultCount count={filtered.length} total={mealKits.length} isFiltering={hasActiveFilters} />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Visual-only bottom call to action */}
-        <div className="mt-20 flex justify-center">
-          <Link
-            to="/meal-kits"
-            className="border border-brand-green text-brand-green dark:border-brand-green-light dark:text-brand-green-light px-12 py-4 rounded-full font-bold uppercase tracking-wider text-xs hover:bg-brand-green hover:text-white dark:hover:bg-brand-green-light dark:hover:text-gray-900 transition-all duration-300"
-          >
-            View All Seasonal Kits
-          </Link>
-        </div>
+        {/* ── Catalog area ── */}
+        <LayoutGroup>
+          <AnimatePresence mode="wait">
+
+            {/* Skeleton while filtering transition happens */}
+            {isFiltering && (
+              <motion.div
+                key="skeletons"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <SkeletonGrid count={Math.max(filtered.length, 4)} />
+              </motion.div>
+            )}
+
+            {/* Empty state */}
+            {!isFiltering && showEmpty && (
+              <EmptyState
+                key="empty"
+                search={search}
+                spiceFilter={spiceFilter}
+                onReset={resetFilters}
+              />
+            )}
+
+            {/* Results grid */}
+            {!isFiltering && !showEmpty && (
+              <motion.div key="grid">
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="show"
+                  exit="exit"
+                  className={`grid ${gridClass(filtered.length)} gap-5`}
+                >
+                  {filtered.map((kit) => {
+                    const categoryName = categories.find((c) => c.id === kit.category)?.name || "FOODBOX Gourmet";
+                    return (
+                      <motion.div key={kit.id} variants={itemVariants} layout>
+                        <MealKitCard kit={kit} categoryName={categoryName} />
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+
+                {/* Recommendation strip when few results */}
+                <AnimatePresence>
+                  {showRecommended && (
+                    <RecommendedStrip
+                      excluded={filtered.map((k) => k.id)}
+                      onReset={resetFilters}
+                    />
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+        </LayoutGroup>
+
       </main>
     </div>
   );
 }
 
+/* ─── Suspense-wrapped export ─────────────────────────────── */
 export default function MealKitsPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen pt-28 text-center">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen pt-28 px-5 max-w-7xl mx-auto">
+          <div className="h-12 w-48 rounded-2xl shimmer mb-10" />
+          <SkeletonGrid count={8} />
+        </div>
+      }
+    >
       <MealKitsContent />
     </Suspense>
   );
 }
+
+

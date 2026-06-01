@@ -6,10 +6,13 @@ import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 
+import ScrollToTop from "./components/ScrollToTop.jsx";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     
       <BrowserRouter>
+        <ScrollToTop />
         <ThemeProvider>
           <CartProvider>
             <App />
